@@ -1,0 +1,29 @@
+{
+  "name": "wb_tg_bot_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "nodemon --inspect dist/main.js",
+    "watch": "tsc -w",
+    "start": "node dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jeszpyx/wb_tg_bot_node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Jeszpyx/wb_tg_bot_node/issues"
+  },
+  "homepage": "https://github.com/Jeszpyx/wb_tg_bot_node#readme",
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
