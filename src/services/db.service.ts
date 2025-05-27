@@ -4,7 +4,7 @@ import {readFile, writeFile} from 'fs/promises';
 import {TProduct} from "../types";
 
 class DbService {
-    private readonly pdfPath: string = join(process.cwd(), 'resources')
+    readonly pdfPath: string = join(process.cwd(), 'resources')
     readonly outputPath: string = join(process.cwd(), 'output')
     private readonly dbPath: string = join(process.cwd(), 'db.json')
 
@@ -55,11 +55,12 @@ class DbService {
 
     public async save(article: string, fileBuffer: Buffer<ArrayBuffer>): Promise<boolean> {
         try {
-            const filePath = join(this.pdfPath, `${article}.pdf`);
+            const fileName = `${article}.pdf`
+            const filePath = join(this.pdfPath, fileName);
             await writeFile(filePath, fileBuffer);
             const newProductData: TProduct = {
                 article,
-                pdfPath: filePath
+                pdfPath: fileName
             }
             const jsonData = await this.getJsonData();
             const newArray = jsonData.some((item: TProduct) => item.article === newProductData.article)

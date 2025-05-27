@@ -123,7 +123,7 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
         const savePath = join(dbService.outputPath, `${Date.now()}.pdf`)
         const merger = new PDFMerger();
         for (const p of foundProducts) {
-            await merger.add(p.pdfPath);
+            await merger.add(join(dbService.pdfPath, p.pdfPath));
         }
 
         await merger.save(savePath);
