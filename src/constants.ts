@@ -1,0 +1,24 @@
+import {config} from "@dotenvx/dotenvx";
+
+config({strict: true})
+
+const botToken = process.env.BOT_TOKEN;
+
+if (!botToken) {
+    throw new Error("⚠️ Ошибка конфигурации бота - добавьте BOT_TOKEN в файл .env")
+}
+
+export const BOT_TOKEN = botToken;
+
+export const admins: number[] = [556203349, 356523219]
+
+
+export const welcomeAndHelpText = `<b>📋 Помощь по боту</b>\n\n` +
+    `<i>✨ Я — ваш умный ассистент для работы с товарами и документами.</i>\n\n` +
+    `<b>🛒 Работа с товарами</b>\n` +
+    `▫️ <b>Добавить товар</b> — напиши артикул → отправь PDF файл\n` +
+    `▫️ <b>Обработать Excel</b> — загрузи файл → я верну PDF для печати\n\n` +
+    `<b>❌ Отмена действия</b>\n` +
+    `▫️ В любой момент отправь команду <code>/cancel</code>, чтобы прервать текущую операцию и выйти в главное меню.\n\n` +
+    `<b>📗 Все команды</b>\n` +
+    `▫️ Нажми кнопку <b>Меню</b> внизу чата, чтобы увидеть доступные команды.`

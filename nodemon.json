@@ -1,0 +1,10 @@
+{
+  "ignore": [
+    "logs/*",
+    "temp/*",
+    "db.json",
+    "*.pdf",
+    "convo-data",
+    "resources"
+  ]
+}
