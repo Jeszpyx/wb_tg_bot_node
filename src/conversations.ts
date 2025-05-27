@@ -10,17 +10,6 @@ import PDFMerger from "pdf-merger-js";
 import {join} from "node:path";
 import {unlink} from "node:fs/promises";
 
-const timeOptions = {
-    timeZone: 'Europe/Minsk',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    fractionalSecondDigits: 3
-};
-
 async function waitForPdf(conversation: Conversation, ctx: Context): Promise<Document> {
     const pdf: Document = await conversation.form.document({})
     if (pdf.mime_type !== 'application/pdf') {
@@ -62,7 +51,7 @@ export async function addProductConv(conversation: Conversation, ctx: Context) {
         if (!result) {
             throw new Error('Не удалось сохранить файл и\\или обновить БД.')
         }
-        await ctx.reply(`✅ Товар №${article} ${isExists ? 'обновлён' : 'добавлен'} успешно.`, {reply_markup: mainKeyboard});
+        await ctx.reply(`✅ Товар ${article} ${isExists ? 'обновлён' : 'добавлен'} успешно.`, {reply_markup: mainKeyboard});
     } catch (e) {
         await ctx.reply(`❌ Действие отменено из-за ошибки:\n${e}`, {reply_markup: mainKeyboard})
         await conversation.halt()
