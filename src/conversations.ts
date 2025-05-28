@@ -83,15 +83,8 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
 
         const foundProducts: TProduct[] = [];
         const notFoundArticles: string[] = [];
-        const processedArticles = new Set<string>(); // Для отслеживания уже обработанных артикулов
 
         for (const article of articles) {
-            if (processedArticles.has(article)) {
-                continue;
-            }
-
-            processedArticles.add(article);
-
             const product = await dbService.findOneByArticle(article);
 
             if (product) {
@@ -102,9 +95,7 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
         }
 
         if (notFoundArticles.length) {
-            const message = `🔴 *Не найдено артикулов в БД: ${notFoundArticles.length}*\n\n` +
-                notFoundArticles.map((art) => art).join('\n');
-
+		const message = "not found"
             await ctx.reply(message, {parse_mode: 'Markdown', reply_markup: mainKeyboard});
             await conversation.halt()
         }
