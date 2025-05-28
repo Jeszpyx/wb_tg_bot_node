@@ -95,9 +95,19 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
         }
 
         if (notFoundArticles.length) {
-		const message = "not found"
-            await ctx.reply(message, {parse_mode: 'Markdown', reply_markup: mainKeyboard});
-            await conversation.halt()
+            // const message = "not found"
+            //     await ctx.reply(message, {parse_mode: 'Markdown', reply_markup: mainKeyboard});
+            //     await conversation.halt()
+            const htmlList = `<b>🔴 Не найдено артикулов: ${notFoundArticles.length}</b>
+                                <ul>
+                                ${notFoundArticles.map(article => `<li>${article}</li>`).join('\n')}
+                              </ul>`;
+
+            await ctx.reply(htmlList, {
+                parse_mode: 'HTML',
+                reply_markup: mainKeyboard
+            });
+            await conversation.halt();
         }
 
         const savePath = join(dbService.outputPath, `${Date.now()}.pdf`)
