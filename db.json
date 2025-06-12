@@ -122,5 +122,37 @@
   {
     "article": "wb500r500",
     "pdfPath": "wb500r500.pdf"
+  },
+  {
+    "article": "Max_24V_200W",
+    "pdfPath": "Max_24V_200W.pdf"
+  },
+  {
+    "article": "Max_12V_150W",
+    "pdfPath": "Max_12V_150W.pdf"
+  },
+  {
+    "article": "Max_12V_300W",
+    "pdfPath": "Max_12V_300W.pdf"
+  },
+  {
+    "article": "wb300g300",
+    "pdfPath": "wb300g300.pdf"
+  },
+  {
+    "article": "wb700g700",
+    "pdfPath": "wb700g700.pdf"
+  },
+  {
+    "article": "Max_12V_36W",
+    "pdfPath": "Max_12V_36W.pdf"
+  },
+  {
+    "article": "wb250g250",
+    "pdfPath": "wb250g250.pdf"
+  },
+  {
+    "article": "wb450g450",
+    "pdfPath": "wb450g450.pdf"
   }
 ]
