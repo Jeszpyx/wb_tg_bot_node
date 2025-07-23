@@ -154,5 +154,49 @@
   {
     "article": "wb450g450",
     "pdfPath": "wb450g450.pdf"
+  },
+  {
+    "article": "wb600r600",
+    "pdfPath": "wb600r600.pdf"
+  },
+  {
+    "article": "wb550g550",
+    "pdfPath": "wb550g550.pdf"
+  },
+  {
+    "article": "OPR_100",
+    "pdfPath": "OPR_100.pdf"
+  },
+  {
+    "article": "wb400g400",
+    "pdfPath": "wb400g400.pdf"
+  },
+  {
+    "article": "wb350g350",
+    "pdfPath": "wb350g350.pdf"
+  },
+  {
+    "article": "Max_24V_60W",
+    "pdfPath": "Max_24V_60W.pdf"
+  },
+  {
+    "article": "Petla_grade_4",
+    "pdfPath": "Petla_grade_4.pdf"
+  },
+  {
+    "article": "Glory_600",
+    "pdfPath": "Glory_600.pdf"
+  },
+  {
+    "article": "Glory_800",
+    "pdfPath": "Glory_800.pdf"
+  },
+  {
+    "article": "Max_24V_100W",
+    "pdfPath": "Max_24V_100W.pdf"
+  },
+  {
+    "article": "xcentr_1000",
+    "pdfPath": "xcentr_1000.pdf"
   }
 ]
