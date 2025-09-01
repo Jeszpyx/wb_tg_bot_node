@@ -8,3 +8,9 @@ export type TProduct = {
     article: string;
     pdfPath: string;
 }
+
+// ==== session data ====
+export interface SessionData {
+    selected: string[];
+    currentPage: number;
+}

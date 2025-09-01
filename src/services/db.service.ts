@@ -53,6 +53,18 @@ class DbService {
         }
     }
 
+    public async getAllTitles(): Promise<{ title: string }[]> {
+        try {
+            const jsonData = await this.getJsonData();
+            return jsonData.map(p => ({
+                title: p.article
+            }))
+        } catch (e) {
+            console.log(`${DbService.name} => ${this.findOneByArticle.name} => error:\n${e}`)
+            return []
+        }
+    }
+
     public async save(article: string, fileBuffer: Buffer<ArrayBuffer>): Promise<boolean> {
         try {
             const fileName = `${article}.pdf`

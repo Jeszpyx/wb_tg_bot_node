@@ -9,6 +9,7 @@ import {TProduct} from "./types";
 import PDFMerger from "pdf-merger-js";
 import {join} from "node:path";
 import {unlink} from "node:fs/promises";
+import {buildProductsMessage} from "./helpers";
 
 async function waitForPdf(conversation: Conversation, ctx: Context): Promise<Document> {
     const pdf: Document = await conversation.form.document({})
@@ -118,5 +119,27 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
     } catch (e) {
         await ctx.reply(`❌ Действие отменено из-за ошибки:\n${e}`, {reply_markup: mainKeyboard});
         await conversation.halt()
+    }
+}
+
+
+export async function getBarcodesPdf(conversation: Conversation, ctx: Context) {
+    try {
+        const products = await dbService.getAllTitles();
+
+
+        const {text, reply_markup} = buildProductsMessage(
+            products,
+            1,
+            []
+        );
+
+        await ctx.reply(text, {reply_markup});
+    } catch (e) {
+        await ctx.reply(
+            `❌ Действие отменено из-за ошибки:\n${e}`,
+            {reply_markup: mainKeyboard}
+        );
+        await conversation.halt();
     }
 }
