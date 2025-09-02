@@ -164,6 +164,7 @@ bot.callbackQuery("clear-selection", async (ctx) => {
     const products = await dbService.getAllTitles();
     const page = 1; // после сброса кидаем на первую страницу
 
+
     const {text, reply_markup} = buildProductsMessage(
         products,
         page,

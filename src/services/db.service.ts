@@ -2,6 +2,7 @@ import {join} from "node:path";
 import * as fs from "node:fs";
 import {readFile, writeFile} from 'fs/promises';
 import {TProduct} from "../types";
+import {buildProductsMessage} from "../helpers";
 
 class DbService {
     readonly pdfPath: string = join(process.cwd(), 'resources')
@@ -56,9 +57,12 @@ class DbService {
     public async getAllTitles(): Promise<{ title: string }[]> {
         try {
             const jsonData = await this.getJsonData();
-            return jsonData.map(p => ({
+
+            const products = jsonData.map(p => ({
                 title: p.article
             }))
+            const sortedProducts = products.sort((a, b) => a.title.localeCompare(b.title));
+            return sortedProducts
         } catch (e) {
             console.log(`${DbService.name} => ${this.findOneByArticle.name} => error:\n${e}`)
             return []

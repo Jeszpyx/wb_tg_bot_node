@@ -5,9 +5,9 @@ export const addKey = '🛍️ Добавить товар'
 export const processKey = '📊 Обработать Excel'
 
 export const mainKeyboard = new Keyboard()
-    .text(getBarcode).row()
-    .text(addKey).row()
     .text(processKey).row()
+    .text(addKey).row()
+    .text(getBarcode).row()
     .resized()
     .oneTime()
 
