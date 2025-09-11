@@ -190,7 +190,7 @@ const main = async (): Promise<void> => {
     ]);
     bot.start();
     const server = createServer(req,res =>res.end(""));
-    seever.listen(3000);
+    server.listen(3000);
 }
 
 main()
