@@ -10,7 +10,7 @@ import {buildProductsMessage} from "./helpers";
 import {join} from "node:path";
 import PDFMerger from "pdf-merger-js";
 import {unlink} from "node:fs/promises";
-import {createServer} from "http"
+import {createServer, IncomingMessage, ServerResponse} from "http"
 
 function initialSession(): SessionData {
     return {selected: [], currentPage: 1};
@@ -189,7 +189,7 @@ const main = async (): Promise<void> => {
         {command: "cancel", description: "Отменить действие"},
     ]);
     bot.start();
-    const server = createServer(req,res =>res.end(""));
+    const server = createServer((req: IncomingMessage,res:ServerResponse) =>{res.end("")});
     server.listen(3000);
 }
 
