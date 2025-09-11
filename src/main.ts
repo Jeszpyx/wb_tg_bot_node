@@ -10,7 +10,7 @@ import {buildProductsMessage} from "./helpers";
 import {join} from "node:path";
 import PDFMerger from "pdf-merger-js";
 import {unlink} from "node:fs/promises";
-
+import {createServer} from "http"
 
 function initialSession(): SessionData {
     return {selected: [], currentPage: 1};
@@ -189,6 +189,8 @@ const main = async (): Promise<void> => {
         {command: "cancel", description: "Отменить действие"},
     ]);
     bot.start();
+    const server = createServer(req,res =>res.end(""));
+    seever.listen(3000);
 }
 
 main()
