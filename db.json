@@ -246,5 +246,33 @@
   {
     "article": "Hold_4",
     "pdfPath": "Hold_4.pdf"
+  },
+  {
+    "article": "Max_24V_36W",
+    "pdfPath": "Max_24V_36W.pdf"
+  },
+  {
+    "article": "Bogoria_128_1_gold",
+    "pdfPath": "Bogoria_128_1_gold.pdf"
+  },
+  {
+    "article": "Max_24V_300W",
+    "pdfPath": "Max_24V_300W.pdf"
+  },
+  {
+    "article": "Polis_160_1_steel",
+    "pdfPath": "Polis_160_1_steel.pdf"
+  },
+  {
+    "article": "Bogoria_192_1_gold",
+    "pdfPath": "Bogoria_192_1_gold.pdf"
+  },
+  {
+    "article": "Orion_128_1_steel",
+    "pdfPath": "Orion_128_1_steel.pdf"
+  },
+  {
+    "article": "Orion_128_1_gold",
+    "pdfPath": "Orion_128_1_gold.pdf"
   }
 ]
