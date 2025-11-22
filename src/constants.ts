@@ -10,7 +10,7 @@ if (!botToken) {
 
 export const BOT_TOKEN = botToken;
 
-export const admins: number[] = [556203349, 356523219]
+export const admins: number[] = [556203349, 356523219, 576420140]
 
 
 export const welcomeAndHelpText = `<b>📋 Помощь по боту</b>\n\n` +
