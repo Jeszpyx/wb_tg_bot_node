@@ -1,0 +1,87 @@
+{
+	"version": [
+		0,
+		0
+	],
+	"state": {
+		"processExcel": [
+			{
+				"interrupts": [
+					2
+				],
+				"replay": {
+					"send": [
+						{
+							"payload": "wait"
+						},
+						{
+							"payload": "sendMessage"
+						},
+						{
+							"payload": "form-document"
+						}
+					],
+					"receive": [
+						{
+							"send": 0,
+							"returnValue": {
+								"update_id": 503047804,
+								"message": {
+									"message_id": 3442,
+									"from": {
+										"id": 576420140,
+										"is_bot": false,
+										"first_name": "5m41l",
+										"username": "by5m41l",
+										"language_code": "ru"
+									},
+									"chat": {
+										"id": 576420140,
+										"first_name": "5m41l",
+										"username": "by5m41l",
+										"type": "private"
+									},
+									"date": 1765467048,
+									"text": "📊 Обработать Excel"
+								}
+							}
+						},
+						{
+							"send": 1,
+							"returnValue": {
+								"ok": true,
+								"res": {
+									"ok": true,
+									"result": {
+										"message_id": 3452,
+										"from": {
+											"id": 7814955163,
+											"is_bot": true,
+											"first_name": "wb-print-pdf-bot",
+											"username": "wb_print_pdf_bot"
+										},
+										"chat": {
+											"id": 576420140,
+											"first_name": "5m41l",
+											"username": "by5m41l",
+											"type": "private"
+										},
+										"date": 1765471002,
+										"text": "Загрузите Excel файл.\nИли отмените операцию через /cancel",
+										"entities": [
+											{
+												"offset": 50,
+												"length": 7,
+												"type": "bot_command"
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}
