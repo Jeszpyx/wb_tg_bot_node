@@ -1,15 +1,15 @@
-import {Conversation} from "@grammyjs/conversations";
-import {Document, File} from '@grammyjs/types'
-import {Context, InputFile} from "grammy";
-import {downloadService} from "./services/download.service";
-import {dbService} from "./services/db.service";
-import {mainKeyboard} from "./keyboards";
-import {read, utils} from "xlsx";
-import {TProduct} from "./types";
+import { Conversation } from "@grammyjs/conversations";
+import { Document, File } from '@grammyjs/types'
+import { Context, InputFile } from "grammy";
+import { downloadService } from "./services/download.service";
+import { dbService } from "./services/db.service";
+import { mainKeyboard } from "./keyboards";
+import { read, utils } from "xlsx";
+import { TProduct } from "./types";
 import PDFMerger from "pdf-merger-js";
-import {join} from "node:path";
-import {unlink} from "node:fs/promises";
-import {buildProductsMessage} from "./helpers";
+import { join } from "node:path";
+import { unlink } from "node:fs/promises";
+import { buildProductsMessage } from "./helpers";
 
 async function waitForPdf(conversation: Conversation, ctx: Context): Promise<Document> {
     const pdf: Document = await conversation.form.document({})
@@ -31,7 +31,7 @@ async function waitForXlsx(conversation: Conversation, ctx: Context): Promise<Do
 
 export async function addProductConv(conversation: Conversation, ctx: Context) {
     try {
-        await ctx.reply("Введите артикул товара.\nИли отмените операцию через /cancel", {reply_markup: {remove_keyboard: true}});
+        await ctx.reply("Введите артикул товара.\nИли отмените операцию через /cancel", { reply_markup: { remove_keyboard: true } });
         const article = await conversation.form.text()
         const isExists = await dbService.findOneByArticle(article)
         if (isExists) {
@@ -52,16 +52,16 @@ export async function addProductConv(conversation: Conversation, ctx: Context) {
         if (!result) {
             throw new Error('Не удалось сохранить файл и\\или обновить БД.')
         }
-        await ctx.reply(`✅ Товар ${article} ${isExists ? 'обновлён' : 'добавлен'} успешно.`, {reply_markup: mainKeyboard});
+        await ctx.reply(`✅ Товар ${article} ${isExists ? 'обновлён' : 'добавлен'} успешно.`, { reply_markup: mainKeyboard });
     } catch (e) {
-        await ctx.reply(`❌ Действие отменено из-за ошибки:\n${e}`, {reply_markup: mainKeyboard})
+        await ctx.reply(`❌ Действие отменено из-за ошибки:\n${e}`, { reply_markup: mainKeyboard })
         await conversation.halt()
     }
 }
 
 export async function processExcel(conversation: Conversation, ctx: Context) {
     try {
-        await ctx.reply("Загрузите Excel файл.\nИли отмените операцию через /cancel", {reply_markup: {remove_keyboard: true}});
+        await ctx.reply("Загрузите Excel файл.\nИли отмените операцию через /cancel", { reply_markup: { remove_keyboard: true } });
         const xlsx = await waitForXlsx(conversation, ctx);
         const fileInfo: File = await ctx.api.getFile(xlsx.file_id)
         if (!fileInfo.file_path) {
@@ -76,7 +76,7 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
         const articles: string[] = [];
 
         for (let row = 5; ; row++) {
-            const cellAddress = utils.encode_cell({r: row, c: 6}); // G = 6
+            const cellAddress = utils.encode_cell({ r: row, c: 5 }); // G = 6 - old version, F = 5 - new
             const cell = worksheet[cellAddress];
             if (!cell) break;
             articles.push(cell.v); // Берём значение ячейки (.v), а не весь объект
@@ -113,11 +113,11 @@ export async function processExcel(conversation: Conversation, ctx: Context) {
         }
 
         await merger.save(savePath);
-        await ctx.replyWithDocument(new InputFile(savePath), {reply_markup: mainKeyboard});
+        await ctx.replyWithDocument(new InputFile(savePath), { reply_markup: mainKeyboard });
 
         await unlink(savePath)
     } catch (e) {
-        await ctx.reply(`❌ Действие отменено из-за ошибки:\n${e}`, {reply_markup: mainKeyboard});
+        await ctx.reply(`❌ Действие отменено из-за ошибки:\n${e}`, { reply_markup: mainKeyboard });
         await conversation.halt()
     }
 }
@@ -128,17 +128,17 @@ export async function getBarcodesPdf(conversation: Conversation, ctx: Context) {
         const products = await dbService.getAllTitles();
 
 
-        const {text, reply_markup} = buildProductsMessage(
+        const { text, reply_markup } = buildProductsMessage(
             products,
             1,
             []
         );
 
-        await ctx.reply(text, {reply_markup});
+        await ctx.reply(text, { reply_markup });
     } catch (e) {
         await ctx.reply(
             `❌ Действие отменено из-за ошибки:\n${e}`,
-            {reply_markup: mainKeyboard}
+            { reply_markup: mainKeyboard }
         );
         await conversation.halt();
     }
