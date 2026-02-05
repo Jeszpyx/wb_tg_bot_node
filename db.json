@@ -274,5 +274,29 @@
   {
     "article": "Orion_128_1_gold",
     "pdfPath": "Orion_128_1_gold.pdf"
+  },
+  {
+    "article": "aqplug_3_silver",
+    "pdfPath": "aqplug_3_silver.pdf"
+  },
+  {
+    "article": "aqplug_2_1a_1c_black",
+    "pdfPath": "aqplug_2_1a_1c_black.pdf"
+  },
+  {
+    "article": "aqplug_2_1a_1c_silver",
+    "pdfPath": "aqplug_2_1a_1c_silver.pdf"
+  },
+  {
+    "article": "aqplug_3_black",
+    "pdfPath": "aqplug_3_black.pdf"
+  },
+  {
+    "article": "aqplug_3_white",
+    "pdfPath": "aqplug_3_white.pdf"
+  },
+  {
+    "article": "aqplug_2_1a_1c_white",
+    "pdfPath": "aqplug_2_1a_1c_white.pdf"
   }
 ]
