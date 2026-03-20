@@ -298,5 +298,21 @@
   {
     "article": "aqplug_2_1a_1c_white",
     "pdfPath": "aqplug_2_1a_1c_white.pdf"
+  },
+  {
+    "article": "T_10_White",
+    "pdfPath": "T_10_White.pdf"
+  },
+  {
+    "article": "T_10_Black",
+    "pdfPath": "T_10_Black.pdf"
+  },
+  {
+    "article": "R_T_350",
+    "pdfPath": "R_T_350.pdf"
+  },
+  {
+    "article": "R_T_450",
+    "pdfPath": "R_T_450.pdf"
   }
 ]
