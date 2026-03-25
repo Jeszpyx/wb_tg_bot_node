@@ -1,0 +1,11 @@
+services:
+  bot:
+    build: .
+    container_name: wb_tg_bot
+    restart: always
+    volumes:
+      - ./resources:/app/resources
+      - ./convo-data:/app/convo-data
+      - ./.env:/app/.env:ro
+    env_file:
+      - .env
