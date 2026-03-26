@@ -40,16 +40,14 @@ COPY --from=builder /app/package*.json ./
 # Копируем только нужные зависимости
 COPY --from=builder /app/node_modules ./node_modules
 
-# Создаем директории для данных
-RUN mkdir -p /app/resources /app/convo-data
+# Создаем директории для данных и даем полные права
+RUN mkdir -p /app/resources /app/convo-data /app/output && \
+    chmod -R 777 /app/resources /app/convo-data /app/output
 
-# Создаем пользователя без прав root для безопасности
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 && \
-    chown -R nodejs:nodejs /app
+# Запускаем приложение от root (простое решение)
+# Если хотите безопаснее - раскомментируйте строки ниже и закомментируйте USER root
+# RUN adduser -D -u 1000 hleb && \
+#     chown -R hleb:hleb /app
+# USER hleb
 
-# Переключаемся на пользователя nodejs
-USER nodejs
-
-# Запускаем приложение
 CMD ["node", "dist/main.js"]

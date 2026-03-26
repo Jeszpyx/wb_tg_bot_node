@@ -314,5 +314,17 @@
   {
     "article": "R_T_450",
     "pdfPath": "R_T_450.pdf"
+  },
+  {
+    "article": "R_T_400",
+    "pdfPath": "R_T_400.pdf"
+  },
+  {
+    "article": "710_chrom",
+    "pdfPath": "710_chrom.pdf"
+  },
+  {
+    "article": "710_black",
+    "pdfPath": "710_black.pdf"
   }
 ]
