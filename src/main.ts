@@ -1,39 +1,40 @@
-import {Bot, type Context, InputFile, NextFunction, session, SessionFlavor} from "grammy";
-import {admins, BOT_TOKEN, welcomeAndHelpText} from "./constants";
-import {addKey, getBarcode, mainKeyboard, processKey} from "./keyboards";
-import {conversations, createConversation,} from "@grammyjs/conversations";
-import {addProductConv, getBarcodesPdf, processExcel} from "./conversations";
-import {FileAdapter} from "@grammyjs/storage-file";
-import {SessionData, TMyBotContext, TProduct} from "./types";
-import {dbService} from "./services/db.service";
-import {buildProductsMessage} from "./helpers";
-import {join} from "node:path";
+import { Bot, type Context, InputFile, NextFunction, session, SessionFlavor } from "grammy";
+import { admins, BOT_TOKEN, welcomeAndHelpText } from "./constants";
+import { addKey, getBarcode, mainKeyboard, processKey, savePdfsKey } from "./keyboards";
+import { conversations, createConversation, } from "@grammyjs/conversations";
+import { addProductConv, getBarcodesPdf, processExcel, savePdfsToCloud } from "./conversations";
+import { FileAdapter } from "@grammyjs/storage-file";
+import { SessionData, TMyBotContext, TProduct } from "./types";
+import { dbService } from "./services/db.service";
+import { buildProductsMessage } from "./helpers";
+import { join } from "node:path";
 import PDFMerger from "pdf-merger-js";
-import {unlink} from "node:fs/promises";
-import {createServer, IncomingMessage, ServerResponse} from "http"
+import { unlink } from "node:fs/promises";
+import { createServer, IncomingMessage, ServerResponse } from "http"
 
 function initialSession(): SessionData {
-    return {selected: [], currentPage: 1};
+    return { selected: [], currentPage: 1 };
 }
 
 const bot = new Bot<TMyBotContext & SessionFlavor<SessionData>>(BOT_TOKEN);
 
-bot.use(session({initial: initialSession}));
+bot.use(session({ initial: initialSession }));
 bot.use(conversations({
-    storage: new FileAdapter({dirName: "convo-data"}),
+    storage: new FileAdapter({ dirName: "convo-data" }),
 }));
 bot.command("cancel", async (ctx) => {
     try {
         await ctx.conversation.exit(Object.keys(ctx.conversation.active())[0]);
-        await ctx.reply(`✅ Действие успешно прервано.`, {reply_markup: mainKeyboard});
+        await ctx.reply(`✅ Действие успешно прервано.`, { reply_markup: mainKeyboard });
     } catch (e) {
-        await ctx.reply(`❌ Ошибка при отмене действия:\n${e}`, {reply_markup: mainKeyboard});
+        await ctx.reply(`❌ Ошибка при отмене действия:\n${e}`, { reply_markup: mainKeyboard });
     }
 
 });
 bot.use(createConversation(addProductConv));
 bot.use(createConversation(processExcel));
 bot.use(createConversation(getBarcodesPdf));
+bot.use(createConversation(savePdfsToCloud));
 
 
 // Only handle commands in private chats.
@@ -53,13 +54,13 @@ pm.use(authMiddleware)
 pm.command("start", async (ctx): Promise<void> => {
     await ctx.conversation.exit(Object.keys(ctx.conversation.active())[0]);
     const name = ctx.from.username || ctx.from.first_name || "гость";
-    await ctx.reply(`Добро пожаловать, ${name}\nДля получения описания функций бота нажмите на /help`, {reply_markup: mainKeyboard});
+    await ctx.reply(`Добро пожаловать, ${name}\nДля получения описания функций бота нажмите на /help`, { reply_markup: mainKeyboard });
 });
 
 pm.command("help", async (ctx): Promise<void> => {
     await ctx.reply(
         welcomeAndHelpText,
-        {reply_markup: mainKeyboard, parse_mode: "HTML"}
+        { reply_markup: mainKeyboard, parse_mode: "HTML" }
     );
 });
 
@@ -82,15 +83,19 @@ pm.hears(processKey, async (ctx): Promise<void> => {
     await ctx.conversation.enter(processExcel.name);
 })
 
+pm.hears(savePdfsKey, async (ctx): Promise<void> => {
+    await ctx.conversation.enter(savePdfsToCloud.name);
+})
+
 // ==== обработка страниц ====
 bot.callbackQuery(/^page:(\d+)$/, async (ctx) => {
     const page = Number(ctx.match[1]);
     ctx.session.currentPage = page;
 
     const products = await dbService.getAllTitles();
-    const {text, reply_markup} = buildProductsMessage(products, page, ctx.session.selected);
+    const { text, reply_markup } = buildProductsMessage(products, page, ctx.session.selected);
 
-    await ctx.editMessageText(text, {reply_markup});
+    await ctx.editMessageText(text, { reply_markup });
     await ctx.answerCallbackQuery();
 });
 
@@ -109,9 +114,9 @@ bot.callbackQuery(/^product:(.+)$/, async (ctx) => {
     const products = await dbService.getAllTitles();
     const page = ctx.session.currentPage || 1;
 
-    const {text, reply_markup} = buildProductsMessage(products, page, ctx.session.selected);
+    const { text, reply_markup } = buildProductsMessage(products, page, ctx.session.selected);
 
-    await ctx.editMessageText(text, {reply_markup});
+    await ctx.editMessageText(text, { reply_markup });
     await ctx.answerCallbackQuery();
 });
 
@@ -120,7 +125,7 @@ bot.callbackQuery("get-selection", async (ctx) => {
         const selected = ctx.session.selected;
 
         if (!selected.length) {
-            await ctx.answerCallbackQuery({text: "❌ Список пуст!", show_alert: true});
+            await ctx.answerCallbackQuery({ text: "❌ Список пуст!", show_alert: true });
             return;
         }
 
@@ -138,7 +143,7 @@ bot.callbackQuery("get-selection", async (ctx) => {
         }
 
         await merger.save(savePath);
-        await ctx.replyWithDocument(new InputFile(savePath), {reply_markup: mainKeyboard});
+        await ctx.replyWithDocument(new InputFile(savePath), { reply_markup: mainKeyboard });
 
         try {
             await ctx.deleteMessage();
@@ -165,7 +170,7 @@ bot.callbackQuery("clear-selection", async (ctx) => {
     const page = 1; // после сброса кидаем на первую страницу
 
 
-    const {text, reply_markup} = buildProductsMessage(
+    const { text, reply_markup } = buildProductsMessage(
         products,
         page,
         ctx.session.selected
@@ -183,13 +188,13 @@ bot.callbackQuery("clear-selection", async (ctx) => {
 
 const main = async (): Promise<void> => {
     await bot.api.setMyCommands([
-        {command: "start", description: "Перезапустить бота"},
-        {command: "help", description: "Получить описание бота"},
-        {command: "keyboard", description: "Открыть клавиатуру"},
-        {command: "cancel", description: "Отменить действие"},
+        { command: "start", description: "Перезапустить бота" },
+        { command: "help", description: "Получить описание бота" },
+        { command: "keyboard", description: "Открыть клавиатуру" },
+        { command: "cancel", description: "Отменить действие" },
     ]);
     bot.start();
-    const server = createServer((req: IncomingMessage,res:ServerResponse) =>{res.end("")});
+    const server = createServer((req: IncomingMessage, res: ServerResponse) => { res.end("") });
     server.listen(3000);
 }
 

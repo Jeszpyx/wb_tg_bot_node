@@ -10,6 +10,10 @@ import PDFMerger from "pdf-merger-js";
 import { join } from "node:path";
 import { unlink } from "node:fs/promises";
 import { buildProductsMessage } from "./helpers";
+import { exec } from 'child_process';
+import util from 'util';
+
+const execAsync = util.promisify(exec);
 
 async function waitForPdf(conversation: Conversation, ctx: Context): Promise<Document> {
     const pdf: Document = await conversation.form.document({})
@@ -135,6 +139,30 @@ export async function getBarcodesPdf(conversation: Conversation, ctx: Context) {
         );
 
         await ctx.reply(text, { reply_markup });
+    } catch (e) {
+        await ctx.reply(
+            `❌ Действие отменено из-за ошибки:\n${e}`,
+            { reply_markup: mainKeyboard }
+        );
+        await conversation.halt();
+    }
+}
+
+
+export async function savePdfsToCloud(conversation: Conversation, ctx: Context) {
+    try {
+        const commitMessage = `update pdfs ${new Date().toISOString()}`;
+
+        // 1. git add .
+        await execAsync('git add .');
+
+        // 2. git commit -m "update pdfs ..."
+        await execAsync(`git commit -m "${commitMessage}"`);
+
+        // 3. git push
+        await execAsync('git push');
+
+        await ctx.reply('✅ Облако синхронизировано', { reply_markup: mainKeyboard });
     } catch (e) {
         await ctx.reply(
             `❌ Действие отменено из-за ошибки:\n${e}`,
