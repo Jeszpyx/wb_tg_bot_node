@@ -1,53 +1,23 @@
-# Используем официальный Node.js образ на основе Alpine (маленький размер)
-FROM node:22-alpine AS builder
+# Используем официальный Node.js образ (LTS)
+FROM node:20-alpine
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
+# Копируем package.json и package-lock.json для установки зависимостей
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm i
+RUN npm install
 
-# Копируем исходники
+# Копируем весь проект в контейнер
 COPY . .
 
-# Собираем TypeScript
+# Ставим права на запись для нужных папок/файлов
+RUN chmod -R 777 /app/resources /app/convo-data /app/db.json /app/output
+
+# Собираем TypeScript проект
 RUN npm run build
 
-# Финальный образ
-FROM node:22-alpine
-
-# Устанавливаем рабочую директорию
-WORKDIR /app
-
-# Устанавливаем необходимые системные зависимости (для pdf-merger-js и xlsx)
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    freetype-dev \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont \
-    && rm -rf /var/cache/apk/*
-
-# Копируем собранные файлы из builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
-
-# Копируем только нужные зависимости
-COPY --from=builder /app/node_modules ./node_modules
-
-# Создаем директории для данных и даем полные права
-RUN mkdir -p /app/resources /app/convo-data /app/output && \
-    chmod -R 777 /app/resources /app/convo-data /app/output
-
-# Запускаем приложение от root (простое решение)
-# Если хотите безопаснее - раскомментируйте строки ниже и закомментируйте USER root
-# RUN adduser -D -u 1000 hleb && \
-#     chown -R hleb:hleb /app
-# USER hleb
-
-CMD ["node", "dist/main.js"]
+# Указываем команду запуска бота из dist
+CMD ["npm", "run", "start"]

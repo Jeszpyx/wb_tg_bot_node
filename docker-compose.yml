@@ -1,14 +1,12 @@
 services:
-  bot:
+  tgbot:
     build: .
     container_name: wb_tg_bot
     restart: always
-    user: "1000:1000"
     volumes:
-      - ./resources:/app/resources:rw
-      - ./convo-data:/app/convo-data:rw
-      - ./output:/app/output:rw
-      - ./.env:/app/.env:ro
-      - ./db.json:/app/db.json:rw
-    env_file:
-      - .env
+      - ./resources:/app/resources
+      - ./convo-data:/app/convo-data
+      - ./output:/app/output
+      - ./db.json:/app/db.json
+    environment:
+      - NODE_ENV=production

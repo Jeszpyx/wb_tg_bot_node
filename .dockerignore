@@ -5,7 +5,3 @@ npm-debug.log
 *.md
 .DS_Store
 dist
-resources/
-convo-data/
-!resources/.gitkeep
-!convo-data/.gitkeep
